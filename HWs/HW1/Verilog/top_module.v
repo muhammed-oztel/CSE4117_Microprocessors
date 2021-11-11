@@ -1,6 +1,5 @@
-module top_module (grounds, display, clk, pushbutton,led);
+module top_module (grounds, display, clk, led);
  
-	input   pushbutton; 
 	output  [3:0] grounds;
 	output  [6:0] display;
 	input   clk; 
@@ -21,7 +20,7 @@ module top_module (grounds, display, clk, pushbutton,led);
 	assign led=memwt; //check memory write signal works or not. For debugging 
  
     //instantiation of cpu
-  	reptile rr1 (.data_in(data_in), .data_out(data_out), .clk(~pushbutton), .memwt(memwt), .address(address),.reg0(reg0));
+  	reptile rr1 (.data_in(data_in), .data_out(data_out), .clk(clk), .memwt(memwt), .address(address),.reg0(reg0));
     //instantiation of seven segment
     sevensegment ss1 (.grounds(grounds), .display(display), .clk(clk),  .datain(reg0));
     
