@@ -10,7 +10,7 @@
 // always @(posedge clk) 
 //     clk1<=clk1+1;
 
-// always @(posedge clk[23]) 
+// always @(posedge clk1[23]) 
 //     number<=number+1;
 
 
@@ -41,10 +41,10 @@ reg [1:0] count;
 always @(posedge clk) 
     clk1<=clk1+1;
 
-always @(posedge clk[15]) // 19 wavy, 23 fast
+always @(posedge clk1[15]) // 19 wavy, 23 fast
     begin
         grounds <={grounds [2:0], grounds[3]};
-        count<=count+1
+        count<=count+1;
     end
 
 always @*
