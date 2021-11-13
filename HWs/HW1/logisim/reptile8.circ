@@ -516,7 +516,7 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <comp lib="0" loc="(200,180)" name="Tunnel">
       <a name="facing" val="south"/>
       <a name="width" val="12"/>
-      <a name="label" val="address"/>
+      <a name="label" val="addrout"/>
     </comp>
     <comp lib="0" loc="(1190,490)" name="Tunnel">
       <a name="facing" val="east"/>
