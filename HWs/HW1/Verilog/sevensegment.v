@@ -1,29 +1,3 @@
-// module ssegment (grounds, display, clk);
-
-// output wire [6:0] display;
-// output wire [3:0] grounds;
-// input clk;
-
-// reg [15:0] number;
-// reg [25:0] clk1;
-
-// always @(posedge clk) 
-//     clk1<=clk1+1;
-
-// always @(posedge clk1[23]) 
-//     number<=number+1;
-
-
-
-// sevensegment ss1 (.datain(number), .grounds(grounds), .display(display), .clk(clk));
-
-// initial
-//     begin
-//        number=0; 
-//     end
-
-// endmodule
-
 module sevensegment(datain, grounds, display, clk);
 
 input wire[15:0] datain;

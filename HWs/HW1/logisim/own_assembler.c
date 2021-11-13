@@ -74,7 +74,7 @@ main()
     struct label_or_variable lditable[100];
     int noofldis = 0;
 
-    fp = fopen("example_program.txt", "r");
+    fp = fopen("terms.asm", "r");
 
     if (fp != NULL)
     {
