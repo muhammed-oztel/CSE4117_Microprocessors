@@ -20,7 +20,7 @@ init    ldi 0 0
         ldi 1 0
         ldi 3 0
         ldi 4 1
-        ld 5 STAR
+        ld 5 STAR 
         ld 6 SQUARE
         # call to convert hex to binary for keypad
 readkey ld 1 KEYPAD
