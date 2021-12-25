@@ -87,26 +87,37 @@ always @(posedge clk)
 		POP1:
 			begin
 				//to be added
+				regbank[7]<=regbank[7]+1;
+				state <= POP2;
 			end
 
 		POP2: 
 			begin
 				//to be added
+				regbank[ir[2:0]] <= data_in;
+				state <= FETCH;
 			end
 
 		CALL: 
 			begin
-			        //to be added 
+				regbank[7] <=regbank[7] - 1; 
+			   	pc<=pc+ir;
+				state <= FETCH;
 			end
 
-		RET1:
-			begin
+		RET1: // ---
+			begin 
 				//to be added
+				regbank[7]<=regbank[7]+1;
+				state <= RET2;
 			end
 
-		RET2:
+		RET2: // ---
 			begin
 				//to be added 
+				pc <= data_in
+				state <= FETCH;
+
 			end
 
 	endcase
@@ -116,18 +127,18 @@ always @*
 		LD:	address=regbank[ir[5:3]][11:0];
 		ST:	address=regbank[ir[5:3]][11:0];
 		PUSH:	address=regbank[7];
-		POP2:	//to be added
-		CALL:	//to be added
-		RET2:	//to be added
+		POP2:	address=regbank[7];	//to be added
+		CALL:	address=regbank[7];	//to be added
+		RET2:	address=regbank[7];	//to be added
 		default: address=pc;
 	endcase
  
  
-assign memwt=(state==ST)|| // to be added
+assign memwt=(state==ST)|| (state==CALL) || (state==PUSH) // to be added
  
 always @*
 	case (state)
-		CALL: data_out = //to be added 
+		CALL: data_out = pc //to be added 
 		default: data_out = regbank[ir[8:6]];
 	endcase
 

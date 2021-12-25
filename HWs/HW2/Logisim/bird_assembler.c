@@ -97,130 +97,200 @@ main()
 //========================================   FIRST PASS  ======================================================
             while (token)
             {
-                if (strcmp(token,"ldi")==0)        //---------------LDI INSTRUCTION--------------------
+                if (strcmp(token, "ldi") == 0) //---------------LDI INSTRUCTION--------------------
                 {
-                    op1 = strtok(NULL,"\n\t\r ");                                //get the 1st operand of ldi, which is the register that ldi loads
-                    op2 = strtok(NULL,"\n\t\r ");                                //get the 2nd operand of ldi, which is the data that is to be loaded
-                    program[counter]=0x1000+hex2int(op1);                        //generate the first 16-bit of the ldi instruction
-                    counter++;                                                   //move to the second 16-bit of the ldi instruction
-                    if ((op2[0]=='0')&&(op2[1]=='x'))                            //if the 2nd operand is twos complement hexadecimal
-                        program[counter]=hex2int(op2+2)&0xffff;              //convert it to integer and form the second 16-bit
-                    else if ((  (op2[0])=='-') || ((op2[0]>='0')&&(op2[0]<='9')))       //if the 2nd operand is decimal
-                        program[counter]=atoi(op2)&0xffff;                         //convert it to integer and form the second 16-bit
-                    else                                                           //if the second operand is not decimal or hexadecimal, it is a laber or a variable.
-                    {                                                               //in this case, the 2nd 16-bits of the ldi instruction cannot be generated.
-                        lditable[noofldis].location = counter;                 //record the location of this 2nd 16-bit
-                        op1=(char*)malloc(sizeof(op2));                         //and the name of the label/variable that it must contain
-                        strcpy(op1,op2);                                        //in the lditable array.
+                    op1 = strtok(NULL, "\n\t\r ");                                      //get the 1st operand of ldi, which is the register that ldi loads
+                    op2 = strtok(NULL, "\n\t\r ");                                      //get the 2nd operand of ldi, which is the data that is to be loaded
+                    program[counter] = 0x1000 + hex2int(op1);                           //generate the first 16-bit of the ldi instruction
+                    counter++;                                                          //move to the second 16-bit of the ldi instruction
+                    if ((op2[0] == '0') && (op2[1] == 'x'))                             //if the 2nd operand is twos complement hexadecimal
+                        program[counter] = hex2int(op2 + 2) & 0xffff;                   //convert it to integer and form the second 16-bit
+                    else if (((op2[0]) == '-') || ((op2[0] >= '0') && (op2[0] <= '9'))) //if the 2nd operand is decimal
+                        program[counter] = atoi(op2) & 0xffff;                          //convert it to integer and form the second 16-bit
+                    else                                                                //if the second operand is not decimal or hexadecimal, it is a laber or a variable.
+                    {                                                                   //in this case, the 2nd 16-bits of the ldi instruction cannot be generated.
+                        lditable[noofldis].location = counter;                          //record the location of this 2nd 16-bit
+                        op1 = (char *)malloc(sizeof(op2));                              //and the name of the label/variable that it must contain
+                        strcpy(op1, op2);                                               //in the lditable array.
                         lditable[noofldis].name = op1;
                         noofldis++;
                     }
-                    counter++;                                                     //skip to the next memory location
+                    counter++; //skip to the next memory location
                 }
-
-                else if (strcmp(token,"ld")==0)      //------------LD INSTRUCTION---------------------
+                //
+                else if (strcmp(token, "ld") == 0) //------------LD INSTRUCTION---------------------
                 {
-                    op1 = strtok(NULL,"\n\t\r ");                //get the 1st operand of ld, which is the destination register
-                    op2 = strtok(NULL,"\n\t\r ");                //get the 2nd operand of ld, which is the source register
-                    ch = (op1[0]-48)| ((op2[0]-48) << 3);        //form bits 11-0 of machine code. 48 is ASCII value of '0'
-                    program[counter]=0x2000+((ch)&0x00ff);       //form the instruction and write it to memory
-                    counter++;                                   //skip to the next empty location in memory
+                    op1 = strtok(NULL, "\n\t\r ");             //get the 1st operand of ld, which is the destination register
+                    op2 = strtok(NULL, "\n\t\r ");             //get the 2nd operand of ld, which is the source register
+                    ch = (op1[0] - 48) | ((op2[0] - 48) << 3); //form bits 11-0 of machine code. 48 is ASCII value of '0'
+                    program[counter] = 0x2000 + ((ch)&0x00ff); //form the instruction and write it to memory
+                    counter++;                                 //skip to the next empty location in memory
                 }
-                else if (strcmp(token,"st")==0) //-------------ST INSTRUCTION--------------------
+                else if (strcmp(token, "st") == 0) //-------------ST INSTRUCTION--------------------
                 {
-                    op1 = strtok(NULL,"\n\t\r ");                //get the 1st operand of ld, which is the destination register
-                    op2 = strtok(NULL,"\n\t\r ");                //get the 2nd operand of ld, which is the source register
-                    chch = (op1[0]-48)<<3| ((op2[0]-48) << 6);        //form bits 11-0 of machine code. 48 is ASCII value of '0'
-                    program[counter]=0x3000+((chch)&0x01ff);       //form the instruction and write it to memory
-                    counter++;                                   //skip to the next empty location in memory
-                    
+                    //to be added
+                    op1 = strtok(NULL, "\n\t\r ");                    //get the 1st operand of ld, which is the destination register
+                    op2 = strtok(NULL, "\n\t\r ");                    //get the 2nd operand of ld, which is the source register
+                    ch = ((op1[0] - 48) << 3) | ((op2[0] - 48) << 6); //form bits 11-0 of machine code. 48 is ASCII value of '0'
+                    program[counter] = 0x3000 + ((ch)&0x01ff);        //form the instruction and write it to memory
+                    counter++;                                        //skip to the next empty location in memory
                 }
-                else if (strcmp(token,"jz")==0) //------------- CONDITIONAL JUMP ------------------
+                else if (strcmp(token, "jz") == 0) //------------- CONDITIONAL JUMP ------------------
                 {
-                    op1 = strtok(NULL,"\n\t\r ");            //read the label string
-                    jumptable[noofjumps].location = counter;    //write the jz instruction's location into the jumptable
-                    op2=(char*)malloc(sizeof(op1));         //allocate space for the label
-                    strcpy(op2,op1);                //copy the label into the allocated space
-                    jumptable[noofjumps].name=op2;            //point to the label from the jumptable
-                    noofjumps++;                    //skip to the next empty location in jumptable
-                    program[counter]=0x4000;            //write the incomplete instruction (just opcode) to memory
-                    counter++;
-                    
-                }
-                else if (strcmp(token,"jmp")==0)  //-------------- JUMP -----------------------------
-                {
-                    op1 = strtok(NULL,"\n\t\r ");            //read the label string
-                    jumptable[noofjumps].location = counter;    //write the jz instruction's location into the jumptable
-                    op2=(char*)malloc(sizeof(op1));         //allocate space for the label
-                    strcpy(op2,op1);                //copy the label into the allocated space
-                    jumptable[noofjumps].name=op2;            //point to the label from the jumptable
-                    noofjumps++;                    //skip to the next empty location in jumptable
-                    program[counter]=0x5000;            //write the incomplete instruction (just opcode) to memory
-                    counter++;                    //skip to the next empty location in memory.
-                }
-                else if (strcmp(token,"add")==0) //----------------- ADD -------------------------------
-                {
-                    op1 = strtok(NULL,"\n\t\r ");
-                    op2 = strtok(NULL,"\n\t\r ");
-                    op3 = strtok(NULL,"\n\t\r ");
-                    chch = (op1[0]-48)| ((op2[0]-48)<<6)|((op3[0]-48)<<3);
-                    program[counter]=0x7000+((chch)&0x01ff);
+                    op1 = strtok(NULL, "\n\t\r ");           //read the label string
+                    jumptable[noofjumps].location = counter; //write the jz instruction's location into the jumptable
+                    op2 = (char *)malloc(sizeof(op1));       //allocate space for the label
+                    strcpy(op2, op1);                        //copy the label into the allocated space
+                    jumptable[noofjumps].name = op2;         //point to the label from the jumptable
+                    noofjumps++;                             //skip to the next empty location in jumptable
+                    program[counter] = 0x4000;               //write the incomplete instruction (just opcode) to memory
                     counter++;
                 }
-                else if (strcmp(token,"sub")==0)
+                else if (strcmp(token, "jmp") == 0) //-------------- JUMP -----------------------------
                 {
-                     //to be added
+                    op1 = strtok(NULL, "\n\t\r ");           //read the label string
+                    jumptable[noofjumps].location = counter; //write the jz instruction's location into the jumptable
+                    op2 = (char *)malloc(sizeof(op1));       //allocate space for the label
+                    strcpy(op2, op1);                        //copy the label into the allocated space
+                    jumptable[noofjumps].name = op2;         //point to the label from the jumptable
+                    noofjumps++;                             //skip to the next empty location in jumptable
+                    program[counter] = 0x5000;               //write the incomplete instruction (just opcode) to memory
+                    counter++;                               //skip to the next empty location in memory.
                 }
-                else if (strcmp(token,"and")==0)
+                else if (strcmp(token, "add") == 0) //----------------- ADD -------------------------------
                 {
-                    //to be added
-                }
-                else if (strcmp(token,"or")==0)
-                {
-                      //to be added
-                }
-                else if (strcmp(token,"xor")==0)
-                {
-                    //to be added
-                }
-                else if (strcmp(token,"not")==0)
-                {
-                    op1 = strtok(NULL,"\n\t\r ");
-                    op2 = strtok(NULL,"\n\t\r ");
-                    ch = (op1[0]-48)| ((op2[0]-48)<<3);
-                    program[counter]=0x7E00+((ch)&0x00ff);
+                    op1 = strtok(NULL, "\n\t\r ");
+                    op2 = strtok(NULL, "\n\t\r ");
+                    op3 = strtok(NULL, "\n\t\r ");
+                    chch = (op1[0] - 48) | ((op2[0] - 48) << 3) | ((op3[0] - 48) << 6);
+                    program[counter] = 0x7000 + ((chch)&0x00ff);
                     counter++;
                 }
-                else if (strcmp(token,"mov")==0)
+                else if (strcmp(token, "sub") == 0)
                 {
                     //to be added
-                }
-                else if (strcmp(token,"inc")==0)
-                {
-                    op1 = strtok(NULL,"\n\t\r ");
-                    ch = (op1[0]-48)| ((op1[0]-48)<<3);
-                    program[counter]=0x7E80+((ch)&0x00ff);
+                    op1 = strtok(NULL, "\n\t\r ");
+                    op2 = strtok(NULL, "\n\t\r ");
+                    op3 = strtok(NULL, "\n\t\r ");
+                    chch = (op1[0] - 48) | ((op2[0] - 48) << 6) | ((op3[0] - 48) << 3);
+                    program[counter] = 0x7200 + ((chch)&0x01ff);
                     counter++;
                 }
-                else if (strcmp(token,"dec")==0)
-                {
-                     //to be added
-                }
-                else if (strcmp(token,"push")==0)
-                {
-                      //to be added
-                }
-                else if (strcmp(token,"pop")==0)
-                {
-                      //to be added
-                }
-                else if (strcmp(token,"call")==0)  //-------------- CALL -----------------------------
+                else if (strcmp(token, "and") == 0)
                 {
                     //to be added
+                    op1 = strtok(NULL, "\n\t\r ");
+                    op2 = strtok(NULL, "\n\t\r ");
+                    op3 = strtok(NULL, "\n\t\r ");
+                    chch = (op1[0] - 48) | ((op2[0] - 48) << 6) | ((op3[0] - 48) << 3);
+                    program[counter] = 0x7400 + ((chch)&0x01ff);
+                    counter++;
                 }
-                else if (strcmp(token,"ret")==0)
+                else if (strcmp(token, "or") == 0)
                 {
                     //to be added
+                    op1 = strtok(NULL, "\n\t\r ");
+                    op2 = strtok(NULL, "\n\t\r ");
+                    op3 = strtok(NULL, "\n\t\r ");
+                    chch = (op1[0] - 48) | ((op2[0] - 48) << 6) | ((op3[0] - 48) << 2);
+                    program[counter] = 0x7600 + ((chch)&0x01ff);
+                    counter++;
+                }
+                else if (strcmp(token, "xor") == 0)
+                {
+                    //to be added
+                    op1 = strtok(NULL, "\n\t\r ");
+                    op2 = strtok(NULL, "\n\t\r ");
+                    op3 = strtok(NULL, "\n\t\r ");
+                    chch = (op1[0] - 48) | ((op2[0] - 48) << 6) | ((op3[0] - 48) << 3);
+                    program[counter] = 0x7800 + ((chch)&0x01ff);
+                    counter++;
+                }
+                else if (strcmp(token, "not") == 0)
+                {
+                    op1 = strtok(NULL, "\n\t\r ");
+                    op2 = strtok(NULL, "\n\t\r ");
+                    ch = (op1[0] - 48) | ((op2[0] - 48) << 3);
+                    program[counter] = 0x7500 + ((ch)&0x00ff);
+                    counter++;
+                }
+                else if (strcmp(token, "mov") == 0)
+                {
+                    //to be added
+                    op1 = strtok(NULL, "\n\t\r ");
+                    op2 = strtok(NULL, "\n\t\r ");
+                    ch = (op1[0] - 48) | ((op2[0] - 48) << 3);
+                    program[counter] = 0x7E40 + ((ch)&0x00ff);
+                    counter++;
+                }
+                else if (strcmp(token, "inc") == 0)
+                {
+                    op1 = strtok(NULL, "\n\t\r ");
+                    ch = (op1[0] - 48) | ((op1[0] - 48) << 3);
+                    program[counter] = 0x7700 + ((ch)&0x00ff);
+                    counter++;
+                }
+                else if (strcmp(token, "dec") == 0)
+                {
+                    //to be added
+                    op1 = strtok(NULL, "\n\t\r ");
+                    ch = (op1[0] - 48) | ((op1[0] - 48) << 3);
+                    program[counter] = 0x7EC0 + ((ch)&0x00ff);
+                    counter++;
+                } else if (strcmp(token, "push") == 0) {
+                    //to be added
+                    op1 = strtok(NULL, "\n\t\r ");
+                    ch = ((op1[0] - 48) << 6);
+                    switch (*op1) {
+                    case '0':
+                        program[counter] = 32768;
+                        break;
+                    case '1':
+                        program[counter] = 32832;
+                        break;
+                    case '2':
+                        program[counter] = 32896;
+                        break;
+                    case '3':
+                        program[counter] = 32960;
+                        break;
+                    case '4':
+                        program[counter] = 33024;
+                        break;
+                    case '5':
+                        program[counter] = 33088;
+                        break;
+                    case '6':
+                        program[counter] = 33152;
+                        break;
+                    case '7':
+                        program[counter] = 33216;
+                        break;
+                    default:
+                        break;
+                    }
+                    counter++;
+                } else if (strcmp(token, "pop") == 0) {
+                    //to be added
+                    op1 = strtok(NULL, "\n\t\r ");
+                    ch = ((op1[0] - 48));
+                    program[counter] = 0x9000 + ((ch)&0x0007);
+                    counter++;
+                } else if (strcmp(token, "call") == 0) //-------------- CALL -----------------------------
+                {
+                    //to be added
+                    op1 = strtok(NULL, "\n\t\r ");           //read the label string
+                    jumptable[noofjumps].location = counter; //write the jz instruction's location into the jumptable
+                    op2 = (char *)malloc(sizeof(op1));       //allocate space for the label
+                    strcpy(op2, op1);                        //copy the label into the allocated space
+                    jumptable[noofjumps].name = op2;         //point to the label from the jumptable
+                    noofjumps++;                             //skip to the next empty location in jumptable
+                    program[counter] = 0xa000;               //write the incomplete instruction (just opcode) to memory
+                    counter++;
+                } else if (strcmp(token, "ret") == 0) {
+                    //to be added
+                    program[counter] = 0xb000;
+                    counter++;
                 }
                 else //------WHAT IS ENCOUNTERED IS NOT AN INSTRUCTION BUT A LABEL. UPDATE THE LABEL TABLE--------
                 {

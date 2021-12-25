@@ -11,7 +11,7 @@ module main_module (
 			);
 
 reg [15:0] data_all;
-wire [3:0] keyout;
+wire [15:0] keyout;
 reg [25:0] clk1;
 reg [1:0] ready_buffer;
 reg ack;
@@ -32,11 +32,11 @@ wire [15:0] address;
 wire memwt;
 
 
-sevensegment ss1 (//to be added);
+sevensegment ss1 (.datain(data_all), .grounds(grounds), .display(display), .clk(clk));//to be added);
 
-keypad  kp1(//to be added);
+keypad  kp1(.rowwrite(rowwrite), .colread(colread), .clk(clk), .ack(ack), .statusordata(statusordata), .keyout(keyout));//to be added);
 
-bird br1 (//to be added);
+bird br1 (.clk(clk), .data_in(data_in), .data_out(data_out), .address(address), .memwt(memwt));//to be added);
 
 
 //multiplexer for cpu input
@@ -56,6 +56,9 @@ always @*
 	else if (address==KEYPAD)
 		begin
 			//to be added 
+			statusordata=0;
+			data_in<={12'b0,keyout};
+			ack=1;
 		end
 	else
 		begin
