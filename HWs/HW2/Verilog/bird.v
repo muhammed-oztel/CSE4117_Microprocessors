@@ -115,7 +115,7 @@ always @(posedge clk)
 		RET2: // ---
 			begin
 				//to be added 
-				pc <= data_in
+				pc <= data_in;
 				state <= FETCH;
 
 			end
@@ -134,11 +134,11 @@ always @*
 	endcase
  
  
-assign memwt=(state==ST)|| (state==CALL) || (state==PUSH) // to be added
+assign memwt=(state==ST)|| (state==CALL) || (state==PUSH); // to be added
  
 always @*
 	case (state)
-		CALL: data_out = pc //to be added 
+		CALL: data_out = pc; //to be added 
 		default: data_out = regbank[ir[8:6]];
 	endcase
 

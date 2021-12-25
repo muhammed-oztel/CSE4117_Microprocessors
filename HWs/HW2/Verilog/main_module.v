@@ -6,8 +6,7 @@ module main_module (
 			input [3:0] colread,
 			input clk,
 			output wire [3:0] grounds,
-			output wire [6:0] display,
-			input pushbutton //may be used as clock
+			output wire [6:0] display
 			);
 
 reg [15:0] data_all;
