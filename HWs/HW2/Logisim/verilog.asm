@@ -55,12 +55,12 @@ callmultlbl	call mult
 calladdlbl	call addit
                 jmp readkey
 
-addit		add 0 0 1
-                ldi 1 0x0b00
-                st 1 0
-                ret
+addit	add 0 0 1
+        ldi 1 0x0b00
+        st 1 0
+        ret
 
-mult		mul 0 0 1
-                ldi 1 0x0b00
-                st 1 0
-                ret
+mult    mul 0 0 1
+        ldi 1 0x0b00
+        st 1 0
+        ret
