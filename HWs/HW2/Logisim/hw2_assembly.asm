@@ -1,23 +1,23 @@
 .data
 .code
-        ldi 6 0x0   # sum
-        ld 6 6
+        ldi 6 0x0       # sum
 loop1   ldi 0 0xFFF0    # switch 1
         ld 0 0
         ldi 1 0xFFF1    # switch 2
         ld 1 1
         ldi 2 0xFFF2    # pb1 
-		ld 2 2
-		ldi 4 0x0001
+        ld 2 2
+        ldi 4 0x0001
         and 5 4 2
-        jz multsum
-        ldi 2 0xFFF3    # pb1 
-		ld 2 2
-		ldi 4 0x0001
+        jz chkpb2
+        jmp multsum
+chkpb2  ldi 2 0xFFF3    # pb2
+        ld 2 2
+        ldi 4 0x0001
         and 5 4 2
-        jz mult
-        jmp loop1
-multsum call pb1sum # 
+        jz loop1
+        jmp mult
+multsum call pb1sum 
         jmp dsseg
 mult    call pb2mult
         jmp dsseg
