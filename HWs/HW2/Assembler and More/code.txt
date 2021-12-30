@@ -1,37 +1,48 @@
 .data
-.code
-        ldi 6 0x0
-        ld 6 6
-loop1   ldi 0 0xFFF0
-        ld 0 0
-        ldi 1 0xFFF1
+.code   ldi 3 0x0b00
+        ldi 0 0
+        ldi 6 0
+readkey ldi 4 1
+        ldi 2 0x0901
+        ld 2 2
+        and 2 2 4
+        jz readkey
+        ldi 1 0x0900
         ld 1 1
-        ldi 2 0xFFF2
-		ld 2 2
-		ldi 4 0x0001
-        and 5 4 2
-        jz multsum
-        ldi 2 0xFFF3
-		ld 2 2
-		ldi 4 0x0001
-        and 5 4 2
-        jz mult
-        jmp loop1
-multsum call pb1sum 
-        jmp dsseg
-mult    call pb2mult
-        jmp dsseg
-dsseg   ldi 2 0xFFF4
-        st 2 6
-        jmp loop1
-pb1sum  add 6 6 6
-        add 6 6 0
+        ldi 5 0xe 
+        sub 2 5 1
+        jz callmultlbl
+        ldi 5 0xf 
+        sub 2 5 1
+        jz calladdlbl
+        call increment
+        jmp readkey
+callmultlbl	call multiply
+                st 3 0
+                ldi 6 0
+                jmp readkey
+
+calladdlbl	call addit
+                jmp readkey
+addit	add 0 0 6
+        st 3 0
+        ldi 6 0
         ret
-pb2mult mov 3 1
-        ldi 5 0x0000
-loop2   add 5 6 5
-        dec 3
-        jz out1
-        jmp loop2
-out1    mov 6 5
-        ret
+increment   mov 4 0 
+            ldi 0 10
+            call multiply
+            add 0 0 1
+            st 3 0
+            mov 6 0
+            mov 0 4
+            ret
+multiply    mov 5 6 
+            mov 6 0
+            ldi 0 0
+            ldi 2 1
+loop1       and 2 2 5 
+            jz display
+            add 0 0 6
+            dec 5
+            jmp loop1
+display     ret

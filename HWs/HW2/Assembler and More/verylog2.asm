@@ -1,4 +1,14 @@
 .data
+        BEGINMEM:0x0000
+        ENDMEM:0x01ff
+        KEYPAD:0x0900
+        STATUSREG:0x0901
+        SEVENSEG:0x0b00
+        STAR:0xe
+        SQUARE:0xf
+
+# r6 = total
+
 .code
         ldi 6 0x0000
         ldi 0 0x0000
