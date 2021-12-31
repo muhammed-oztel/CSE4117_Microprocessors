@@ -162,8 +162,8 @@ main()
                     op1 = strtok(NULL, "\n\t\r ");
                     op2 = strtok(NULL, "\n\t\r ");
                     op3 = strtok(NULL, "\n\t\r ");
-                    chch = (op1[0] - 48) | ((op2[0] - 48) << 3) | ((op3[0] - 48) << 6);
-                    program[counter] = 0x7000 + ((chch)&0x00ff);
+                    chch = (op1[0] - 48) | ((op2[0] - 48) << 6) | ((op3[0] - 48) << 3);
+                    program[counter] = 0x7000 + ((chch)&0x01ff);
                     counter++;
                 }
                 else if (strcmp(token, "sub") == 0)
@@ -241,14 +241,14 @@ main()
                     //to be added
                     op1 = strtok(NULL,"\n\t\r ");
                     ch = ((op1[0]-48)<<6);
-                    program[counter]=0x8038+((ch)&0x00c0);
+                    program[counter]=0x8000+((ch)&0x00c0);
                     counter++;
 
                 } else if (strcmp(token, "pop") == 0) {
                     //to be added
                     op1 = strtok(NULL,"\n\t\r ");
                     ch = (op1[0]-48);
-                    program[counter]=0x9038+((ch)&0x0007);
+                    program[counter]=0x9000+((ch)&0x0007);
                     counter++;
                 } else if (strcmp(token, "call") == 0) //-------------- CALL -----------------------------
                 {
