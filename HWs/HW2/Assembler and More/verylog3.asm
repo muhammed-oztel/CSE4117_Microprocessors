@@ -1,4 +1,14 @@
 .data
+        BEGINMEM:0x0000
+        ENDMEM:0x01ff
+        KEYPAD:0x0900
+        STATUSREG:0x0901
+        SEVENSEG:0x0b00
+        STAR:0xe
+        SQUARE:0xf
+
+# r6 = total
+
 .code
 init    ldi 6 0x0000
         ldi 0 0x0000
@@ -50,7 +60,7 @@ out1    mov 6 5
         ret
 caddlb  mov 4 6              
         ldi 6 0x0000            
-contadd call readkey 
+contadd call readkey
         ldi 5 0x000c
         sub 2 5 1
         jz addit

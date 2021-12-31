@@ -10,8 +10,19 @@
 # r6 = total
 
 .code
-        ldi 6 0x0000
+init    ldi 6 0x0000
         ldi 0 0x0000
+frst    ldi 4 0x0001
+        ldi 2 0x0901
+        ld 2 2
+        and 2 2 4
+        jz frst
+        ldi 1 0x0900
+        ld 1 1
+        mov 6 1
+        ldi 3 0x0b00
+        mov 0 1
+        st 3 1
 readkey ldi 4 0x0001
         ldi 2 0x0901
         ld 2 2
@@ -19,10 +30,13 @@ readkey ldi 4 0x0001
         jz readkey
         ldi 1 0x0900
         ld 1 1
+        ldi 5 0x000a
+        sub 2 5 1
+        jz init
         ldi 5 0x000b
         sub 2 5 1
         jz cmultlb
-        ldi 5 0x000c 
+        ldi 5 0x000c
         sub 2 5 1
         jz caddlb
         ldi 3 0x0b00

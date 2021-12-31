@@ -239,48 +239,24 @@ main()
                     counter++;
                 } else if (strcmp(token, "push") == 0) {
                     //to be added
-                    op1 = strtok(NULL, "\n\t\r ");
-                    ch = ((op1[0] - 48) << 6);
-                    switch (*op1) {
-                    case '0':
-                        program[counter] = 32768;
-                        break;
-                    case '1':
-                        program[counter] = 32832;
-                        break;
-                    case '2':
-                        program[counter] = 32896;
-                        break;
-                    case '3':
-                        program[counter] = 32960;
-                        break;
-                    case '4':
-                        program[counter] = 33024;
-                        break;
-                    case '5':
-                        program[counter] = 33088;
-                        break;
-                    case '6':
-                        program[counter] = 33152;
-                        break;
-                    case '7':
-                        program[counter] = 33216;
-                        break;
-                    default:
-                        break;
-                    }
+                    op1 = strtok(NULL,"\n\t\r ");
+                    ch = ((op1[0]-48)<<6);
+                    program[counter]=0x8038+((ch)&0x00c0);
                     counter++;
+
                 } else if (strcmp(token, "pop") == 0) {
                     //to be added
-                    op1 = strtok(NULL, "\n\t\r ");
-                    ch = ((op1[0] - 48));
-                    program[counter] = 0x9000 + ((ch)&0x0007);
+                    op1 = strtok(NULL,"\n\t\r ");
+                    ch = (op1[0]-48);
+                    program[counter]=0x9038+((ch)&0x0007);
                     counter++;
                 } else if (strcmp(token, "call") == 0) //-------------- CALL -----------------------------
                 {
                     //to be added
                     op1 = strtok(NULL, "\n\t\r ");           //read the label string
+                    
                     jumptable[noofjumps].location = counter; //write the jz instruction's location into the jumptable
+                    
                     op2 = (char *)malloc(sizeof(op1));       //allocate space for the label
                     strcpy(op2, op1);                        //copy the label into the allocated space
                     jumptable[noofjumps].name = op2;         //point to the label from the jumptable
