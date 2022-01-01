@@ -2,6 +2,7 @@
 .code
 init    ldi 6 0x0000
         ldi 0 0x0000
+        mov 6 0
         ldi 3 0x0b00
         st 3 6
 start   call readkey
