@@ -29,7 +29,7 @@ int hex2int( char* hex)
 }
 
 
-main()
+void main()
 {
     FILE *fp;
     char line[100];
@@ -263,6 +263,9 @@ main()
                     noofjumps++;                             //skip to the next empty location in jumptable
                     program[counter] = 0xa000;               //write the incomplete instruction (just opcode) to memory
                     counter++;
+                    counter++;
+
+
                 } else if (strcmp(token, "ret") == 0) {
                     //to be added
                     program[counter] = 0xb000;
@@ -270,15 +273,17 @@ main()
                 }
                 else if (strcmp(token, "iret") == 0) {
                     //to be added
-                    
+                    program[counter] = 0xe000;
                     counter++;
                 } 
                 else if (strcmp(token, "sti") == 0) {
                     //to be added
+                    program[counter] = 0xc000;
                     counter++;
                 }  
                 else if (strcmp(token, "cli") == 0) {
                     //to be added
+                    program[counter] = 0xd000;
                     counter++;
                 } 
 
@@ -306,7 +311,7 @@ main()
             j=0;
             while ((j<nooflabels)&&( strcmp(jumptable[i].name , labeltable[j].name ) != 0 ))  //if the label for this jump/jz does not match with the
                 j++;                                            // jth label in the labeltable, check the next label..
-            program[jumptable[i].location] +=(labeltable[j].location-jumptable[i].location-1)&0x0fff;       //copy the jump address into memory.
+            program[jumptable[i].location] +=(labeltable[j].location-jumptable[i].location-1)&0xffff;       //copy the jump address into memory.
         }
 
 

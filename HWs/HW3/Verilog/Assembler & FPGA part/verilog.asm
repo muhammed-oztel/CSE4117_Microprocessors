@@ -76,3 +76,4 @@ readkey ldi 3 0x0001
         ldi 1 0x0900
         ld 1 1
         ret
+bcd     # FF -> 255 -> 597 # 597 - 255 = 342
