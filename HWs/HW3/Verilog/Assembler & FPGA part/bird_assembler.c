@@ -268,6 +268,21 @@ main()
                     program[counter] = 0xb000;
                     counter++;
                 }
+                else if (strcmp(token, "iret") == 0) {
+                    //to be added
+                    
+                    counter++;
+                } 
+                else if (strcmp(token, "sti") == 0) {
+                    //to be added
+                    counter++;
+                }  
+                else if (strcmp(token, "cli") == 0) {
+                    //to be added
+                    counter++;
+                } 
+
+
                 else //------WHAT IS ENCOUNTERED IS NOT AN INSTRUCTION BUT A LABEL. UPDATE THE LABEL TABLE--------
                 {
                     labeltable[nooflabels].location = counter;  //read the label and update labeltable.
