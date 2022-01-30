@@ -129,11 +129,11 @@ void main()
                 else if (strcmp(token, "st") == 0) //-------------ST INSTRUCTION--------------------
                 {
                     //to be added
-                    op1 = strtok(NULL, "\n\t\r ");                    //get the 1st operand of ld, which is the destination register
-                    op2 = strtok(NULL, "\n\t\r ");                    //get the 2nd operand of ld, which is the source register
-                    ch = ((op1[0] - 48) << 3) | ((op2[0] - 48) << 6); //form bits 11-0 of machine code. 48 is ASCII value of '0'
-                    program[counter] = 0x3000 + ((ch)&0x01ff);        //form the instruction and write it to memory
-                    counter++;                                        //skip to the next empty location in memory
+                    op1 = strtok(NULL, "\n\t\r ");                    
+                    op2 = strtok(NULL, "\n\t\r ");                    
+                    chch = ((op1[0] - 48) << 3) | ((op2[0] - 48) << 6); //form bits 11-0 of machine code. 48 is ASCII value of '0'
+                    program[counter] = 0x3000 + ((chch)&0x01f8);        
+                    counter++;                                        
                 }
                 else if (strcmp(token, "jz") == 0) //------------- CONDITIONAL JUMP ------------------
                 {

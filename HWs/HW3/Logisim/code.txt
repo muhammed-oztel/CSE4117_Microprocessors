@@ -1,15 +1,15 @@
 .data
 .code
         ldi 7 0x0900
-        ldi 0 0x07f0
-        ldi 1 tisr
-        st  0 1
+        ldi 4 0x07f0
+        ldi 2 tisr
+        st  4 2
         ldi 5 0x0000
         sti
 main    ldi 3 0x0000
         jmp main
 tisr    ldi 1 0x0001 
         add 5 5 1
-        ldi 2 0x7FF5	
-        st  2 5
+        ldi 1 0x7FF5	
+        st  1 5
         iret
