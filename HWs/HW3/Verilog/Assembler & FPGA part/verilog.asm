@@ -76,4 +76,37 @@ readkey ldi 3 0x0001
         ldi 1 0x0900
         ld 1 1
         ret
-bcd     # FF -> 255 -> 597 # 597 - 255 = 342
+showval mov 6 0
+        ldi 3 0x0001
+        ldi 5 0x0008
+sloop   and 2 3 5
+        jz endshow
+        ldi 2 0x0100
+        sub 2 6 2
+        jz sloop
+        ldi 2 0x0200
+        sub 2 6 2
+        jz sloop
+        ldi 2 0x0300
+        sub 2 6 2
+        jz sloop
+        ldi 2 0x0400
+        sub 2 6 2
+        jz sloop
+        ldi 2 0x1000
+        sub 2 6 2
+        jz sloop
+        ldi 2 0x2000
+        sub 2 6 2
+        jz sloop
+        ldi 2 0x3000
+        sub 2 6 2
+        jz sloop
+        ldi 2 0x4000
+        sub 2 6 2
+        jz sloop
+
+endshow ret
+
+
+        
