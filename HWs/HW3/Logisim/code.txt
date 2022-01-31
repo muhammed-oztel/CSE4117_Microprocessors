@@ -7,18 +7,7 @@
         st  4 2
         ldi 5 0x0000
 main    sti
-        ldi 0 0xFFF0 
-        ld 0 0
-        ldi 1 0xFFF1
-        ld 1 1
-        ldi 2 0xFFF2
-        ld 2 2
-        ldi 3 0x0001
-        and 3 3 2
-        jz main
-        add 1 1 0
-        ldi 0 0xFFF4
-        st 0 1
+        cli
         jmp main
 tisr    push 1
         ldi 1 0x0001 
@@ -27,4 +16,3 @@ tisr    push 1
         st  1 5
         pop 1
         iret
-				

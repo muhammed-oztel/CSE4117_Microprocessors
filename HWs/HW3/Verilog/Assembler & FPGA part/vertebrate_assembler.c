@@ -264,6 +264,8 @@ void main()
                 } else if (strcmp(token, "call") == 0) //-------------- CALL ----------------------------- OK
                 {
                     //to be added
+                    program[counter] = 0xa000;               //write the incomplete instruction (just opcode) to memory
+                    counter++;
                     op1 = strtok(NULL, "\n\t\r ");           //read the label string
                     
                     jumptable[noofjumps].location = counter; //write the jz instruction's location into the jumptable
@@ -272,8 +274,6 @@ void main()
                     strcpy(op2, op1);                        //copy the label into the allocated space
                     jumptable[noofjumps].name = op2;         //point to the label from the jumptable
                     noofjumps++;                             //skip to the next empty location in jumptable
-                    program[counter] = 0xa000;               //write the incomplete instruction (just opcode) to memory
-                    counter++;
                     counter++;
 
 
@@ -284,7 +284,7 @@ void main()
                 }
                 else if (strcmp(token, "iret") == 0) { // OK
                     //to be added
-                    program[counter] = 0xe006;
+                    program[counter] = 0xe000;
                     counter++;
                 } 
                 else if (strcmp(token, "sti") == 0) { // OK
