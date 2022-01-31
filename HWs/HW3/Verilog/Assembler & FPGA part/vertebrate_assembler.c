@@ -122,8 +122,8 @@ void main()
                 {
                     op1 = strtok(NULL, "\n\t\r ");             //get the 1st operand of ld, which is the destination register
                     op2 = strtok(NULL, "\n\t\r ");             //get the 2nd operand of ld, which is the source register
-                    ch = (op1[0] - 48) | ((op2[0] - 48) << 3); //form bits 11-0 of machine code. 48 is ASCII value of '0'
-                    program[counter] = 0x2000 + ((ch)&0x00ff); //form the instruction and write it to memory
+                    chch = (op1[0] - 48) | ((op2[0] - 48) << 3); //form bits 11-0 of machine code. 48 is ASCII value of '0'
+                    program[counter] = 0x2000 + ((chch)&0x00ff); //form the instruction and write it to memory
                     counter++;                                 //skip to the next empty location in memory
                 }
                 else if (strcmp(token, "st") == 0) //-------------ST INSTRUCTION--------------------
@@ -137,14 +137,14 @@ void main()
                 }
                 else if (strcmp(token, "jz") == 0) //------------- CONDITIONAL JUMP ------------------
                 {
+                    program[counter] = 0x4000;               //write the incomplete instruction (just opcode) to memory
+                    counter++;
                     op1 = strtok(NULL, "\n\t\r ");           //read the label string
                     jumptable[noofjumps].location = counter; //write the jz instruction's location into the jumptable
                     op2 = (char *)malloc(sizeof(op1));       //allocate space for the label
                     strcpy(op2, op1);                        //copy the label into the allocated space
                     jumptable[noofjumps].name = op2;         //point to the label from the jumptable
                     noofjumps++;                             //skip to the next empty location in jumptable
-                    program[counter] = 0x4000;               //write the incomplete instruction (just opcode) to memory
-                    counter++;
                     counter++;
                 }
                 else if (strcmp(token, "jmp") == 0) //-------------- JUMP -----------------------------
@@ -208,51 +208,60 @@ void main()
                     program[counter] = 0x7800 + ((chch)&0x01ff);
                     counter++;
                 }
-                else if (strcmp(token, "not") == 0)
+                else if (strcmp(token, "not") == 0) // ALU 6
                 {
+                     // alucode: 111 000
                     op1 = strtok(NULL, "\n\t\r ");
                     op2 = strtok(NULL, "\n\t\r ");
-                    ch = (op1[0] - 48) | ((op2[0] - 48) << 3);
-                    program[counter] = 0x7500 + ((ch)&0x00ff);
+                    chch = (op1[0] - 48) | ((op2[0] - 48) << 3);
+                    // 0111111000000000
+                    program[counter] = 0x7E00 + ((chch)&0x00ff);
                     counter++;
                 }
-                else if (strcmp(token, "mov") == 0)
+                else if (strcmp(token, "mov") == 0)  // ALU 6
                 {
                     //to be added
+                    // alucode: 111 001
                     op1 = strtok(NULL, "\n\t\r ");
                     op2 = strtok(NULL, "\n\t\r ");
-                    ch = (op1[0] - 48) | ((op2[0] - 48) << 3);
-                    program[counter] = 0x7E40 + ((ch)&0x00ff);
+                    chch = (op1[0] - 48) | ((op2[0] - 48) << 3);
+                    // 0111111001000000
+                    program[counter] = 0x7E40 + ((chch)&0x00ff);
                     counter++;
                 }
-                else if (strcmp(token, "inc") == 0)
+                else if (strcmp(token, "inc") == 0) // ALU 6
                 {
+                    // alucode: 111 010
+
                     op1 = strtok(NULL, "\n\t\r ");
-                    ch = (op1[0] - 48) | ((op1[0] - 48) << 3);
-                    program[counter] = 0x7700 + ((ch)&0x00ff);
+                    chch = (op1[0] - 48) | ((op1[0] - 48) << 3);
+                    // 0111111010000000
+                    program[counter] = 0x7800 + ((chch)&0x00ff);
                     counter++;
                 }
-                else if (strcmp(token, "dec") == 0)
+                else if (strcmp(token, "dec") == 0) // ALU 6
                 {
                     //to be added
+                    // alucode: 111 011
                     op1 = strtok(NULL, "\n\t\r ");
-                    ch = (op1[0] - 48) | ((op1[0] - 48) << 3);
-                    program[counter] = 0x7EC0 + ((ch)&0x00ff);
+                    chch = (op1[0] - 48) | ((op1[0] - 48) << 3);
+                    // 0111111011000000
+                    program[counter] = 0x7EC0 + ((chch)&0x00ff);
                     counter++;
-                } else if (strcmp(token, "push") == 0) {
+                } else if (strcmp(token, "push") == 0) { // OK
                     //to be added
                     op1 = strtok(NULL,"\n\t\r ");
-                    ch = ((op1[0]-48)<<6);
-                    program[counter]=0x8000+((ch)&0x00c0);
+                    chch = ((op1[0]-48)<<6);
+                    program[counter]=0x8000+((chch)&0x01c0);
                     counter++;
 
-                } else if (strcmp(token, "pop") == 0) {
+                } else if (strcmp(token, "pop") == 0) { // OK
                     //to be added
                     op1 = strtok(NULL,"\n\t\r ");
-                    ch = (op1[0]-48);
-                    program[counter]=0x9000+((ch)&0x0007);
+                    chch = (op1[0]-48);
+                    program[counter]=0x9000+((chch)&0x0007);
                     counter++;
-                } else if (strcmp(token, "call") == 0) //-------------- CALL -----------------------------
+                } else if (strcmp(token, "call") == 0) //-------------- CALL ----------------------------- OK
                 {
                     //to be added
                     op1 = strtok(NULL, "\n\t\r ");           //read the label string
@@ -268,22 +277,22 @@ void main()
                     counter++;
 
 
-                } else if (strcmp(token, "ret") == 0) {
+                } else if (strcmp(token, "ret") == 0) { // OK
                     //to be added
                     program[counter] = 0xb000;
                     counter++;
                 }
-                else if (strcmp(token, "iret") == 0) {
+                else if (strcmp(token, "iret") == 0) { // OK
                     //to be added
-                    program[counter] = 0xe000;
+                    program[counter] = 0xe006;
                     counter++;
                 } 
-                else if (strcmp(token, "sti") == 0) {
+                else if (strcmp(token, "sti") == 0) { // OK
                     //to be added
                     program[counter] = 0xc000;
                     counter++;
                 }  
-                else if (strcmp(token, "cli") == 0) {
+                else if (strcmp(token, "cli") == 0) { // OK
                     //to be added
                     program[counter] = 0xd000;
                     counter++;
