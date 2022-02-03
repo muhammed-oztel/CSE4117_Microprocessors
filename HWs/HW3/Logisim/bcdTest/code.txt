@@ -1,7 +1,6 @@
 .data
 .code
         ldi 7 0x0900
-        sti
         ldi 4 0x07f0
         ldi 5 0x0000
 main    ldi 1 0x00FF
@@ -127,6 +126,6 @@ pass6   ldi 4 0x001e
         jz endshow
         ldi 4 0x0006
         add 0 0 4
-endshow ldi 5 0xFFF4
-        st 5 0
+endshow ldi 4 0xFFF4
+        st 4 0
         ret

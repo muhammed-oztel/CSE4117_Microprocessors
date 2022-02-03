@@ -20,12 +20,150 @@ main    sti
         ldi 1 0xFFF1
         ld 1 1
         add 1 1 0
-        ldi 0 0xFFF4
-        st 0 1
+        ldi 2 0x0000
+        cli
+        cli
+        jmp showval
+        sti
+res1    ldi 3 0xFFF4
+        st 3 0
         cli
         jmp main
 tisr    ldi 3 0x0001 
         add 5 5 3
-        ldi 3 0xFFF5	
-        st  3 5
+        ldi 2 0x0001
+        cli
+        cli
+        jmp showval
+        sti
+res2    ldi 3 0xFFF5	
+        st  3 0
         iret
+showval mov 0 1
+        ldi 3 0x0001
+        and 3 3 2
+        jz cont
+        mov 0 5
+cont    ldi 4 0x00e0
+        and 4 0 4
+        jz pass1
+        ldi 3 0x0020
+        sub 3 4 3
+        jz pass1
+        ldi 3 0x0040
+        sub 3 4 3
+        jz pass1
+        ldi 3 0x0060
+        sub 3 4 3
+        jz pass1
+        ldi 3 0x0080
+        sub 3 4 3
+        jz pass1
+        ldi 4 0x0060
+        add 0 0 4
+pass1   ldi 4 0x00f0
+        and 4 0 4
+        jz pass2
+        ldi 3 0x0010
+        sub 3 4 3
+        jz pass2
+        ldi 3 0x0020
+        sub 3 4 3
+        jz pass2
+        ldi 3 0x0030
+        sub 3 4 3
+        jz pass2
+        ldi 3 0x0040
+        sub 3 4 3
+        jz pass2
+        ldi 4 0x0030
+        add 0 0 4
+pass2   ldi 4 0x0078
+        and 4 0 4
+        jz pass3
+        ldi 3 0x0008
+        sub 3 4 3
+        jz pass3
+        ldi 3 0x0010
+        sub 3 4 3
+        jz pass3
+        ldi 3 0x0018
+        sub 3 4 3
+        jz pass3
+        ldi 3 0x0020
+        sub 3 4 3
+        jz pass3
+        ldi 4 0x0018
+        add 0 0 4
+pass3   ldi 4 0x01c0
+        and 4 0 4
+        jz pass4
+        ldi 3 0x0040
+        sub 3 4 3
+        jz pass4
+        ldi 3 0x0080
+        sub 3 4 3
+        jz pass4
+        ldi 3 0x00c0
+        sub 3 4 3
+        jz pass4
+        ldi 3 0x0100
+        sub 3 4 3
+        jz pass4
+        ldi 4 0x00c0
+        add 0 0 4
+pass4   ldi 4 0x003c
+        and 4 0 4
+        jz pass5
+        ldi 3 0x0004
+        sub 3 4 3
+        jz pass5
+        ldi 3 0x0008
+        sub 3 4 3
+        jz pass5
+        ldi 3 0x000c
+        sub 3 4 3
+        jz pass5
+        ldi 3 0x0010
+        sub 3 4 3
+        jz pass5
+        ldi 4 0x000c
+        add 0 0 4
+pass5   ldi 4 0x01e0
+        and 4 0 4
+        jz pass6
+        ldi 3 0x0020
+        sub 3 4 3
+        jz pass6
+        ldi 3 0x0040
+        sub 3 4 3
+        jz pass6
+        ldi 3 0x0060
+        sub 3 4 3
+        jz pass6
+        ldi 3 0x0080
+        sub 3 4 3
+        jz pass6
+        ldi 4 0x0060
+        add 0 0 4
+pass6   ldi 4 0x001e
+        and 4 0 4
+        jz endshow
+        ldi 3 0x0002
+        sub 3 4 3
+        jz endshow
+        ldi 3 0x0004
+        sub 3 4 3
+        jz endshow
+        ldi 3 0x0006
+        sub 3 4 3
+        jz endshow
+        ldi 3 0x0008
+        sub 3 4 3
+        jz endshow
+        ldi 4 0x0006
+        add 0 0 4
+endshow ldi 3 0x0001
+        and 3 3 2
+        jz res1
+        jmp res2
