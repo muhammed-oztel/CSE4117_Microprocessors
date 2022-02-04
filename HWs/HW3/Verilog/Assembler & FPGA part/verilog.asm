@@ -118,7 +118,7 @@ shft    add 0 0 0
         dec 5
         jmp sloop
 endshow ldi 3 0x0b00
-        st 3 0
+        st 3 
         ret
 
 

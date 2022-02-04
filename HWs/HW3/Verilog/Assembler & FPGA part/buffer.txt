@@ -1,0 +1,402 @@
+readk2  ldi 3 0x0001
+        ldi 2 0x0c00
+        ld 2 2
+        and 2 2 3
+        jz readkey
+        ldi 1 0x0c01
+        ld 1 1
+        ret
+
+
+//
+
+.data
+.code
+init    ldi 6 0x0000
+        ldi 0 0x0000
+        mov 6 0
+        call showval
+start   call readkey
+        ldi 5 0x000a
+        sub 2 5 1
+        jz init
+        ldi 5 0x000b
+        sub 2 5 1
+        jz cmultlb
+        ldi 5 0x000c
+        sub 2 5 1
+        jz caddlb
+        ldi 0 10
+        call mult               
+        add 6 6 1             
+        call showval
+        jmp start
+cmultlb mov 4 6              
+        ldi 6 0x0000            
+contmul call readkey
+        ldi 5 0x000b
+        sub 2 5 1
+        jz carp
+        ldi 0 10                
+        call mult
+        add 6 6 1                          
+        call showval
+        jmp contmul
+carp    mov 0 6
+        mov 6 4                   
+        call mult
+        call showval
+        jmp start 
+mult    ldi 5 0x0000
+        mov 3 0 
+        jz out1
+loop2   add 5 6 5
+        dec 3
+        jz out1
+        jmp loop2
+out1    mov 6 5
+        mov 0 6
+        ret
+caddlb  mov 4 6              
+        ldi 6 0x0000            
+contadd call readkey
+        ldi 5 0x000c
+        sub 2 5 1
+        jz addit
+        ldi 0 10                
+        call mult
+        add 6 6 1                          
+        call showval
+        jmp contadd
+addit   mov 0 6
+        mov 6 4
+        add 6 6 0
+        mov 0 6
+        call showval
+        jmp start
+readkey ldi 3 0x0001
+        ldi 2 0x0901
+        ld 2 2
+        and 2 2 3
+        jz readkey
+        ldi 1 0x0900
+        ld 1 1
+        ret
+showval ldi 3 0x0b00
+        st 3 6
+        ret
+
+//
+
+.data
+.code
+init    ldi 7 0x0990
+dinit   call show
+        jmp dinit
+show    ldi 5 0x0b00
+        ldi 0 0x0c00
+        ld 0 0
+        ldi 1 0x0001
+        and 1 0 1
+        jz show
+        ldi 4 0x0c01
+        ld 4 4
+        st 5 4
+        ret
+
+//
+
+.data
+.code
+init    ldi 7 0x0990
+        ldi 6 0x0000
+        ldi 0 0x0000
+        mov 6 0
+        call showval
+start   call readkey
+        ldi 5 0x000a
+        sub 2 5 1
+        jz init
+        ldi 5 0x000b
+        sub 2 5 1
+        jz cmultlb
+        ldi 5 0x000c
+        sub 2 5 1
+        jz caddlb
+        ldi 0 10
+        call mult               
+        add 6 6 1             
+        call showval
+        jmp start
+cmultlb mov 4 6              
+        ldi 6 0x0000            
+contmul call readkey
+        ldi 5 0x000b
+        sub 2 5 1
+        jz carp
+        ldi 0 10                
+        call mult
+        add 6 6 1                          
+        call showval
+        jmp contmul
+carp    mov 0 6
+        mov 6 4                   
+        call mult
+        call showval
+        jmp start 
+mult    ldi 5 0x0000
+        mov 3 0 
+        jz out1
+loop2   add 5 6 5
+        dec 3
+        jz out1
+        jmp loop2
+out1    mov 6 5
+        mov 0 6
+        ret
+caddlb  mov 4 6              
+        ldi 6 0x0000            
+contadd call readkey
+        ldi 5 0x000c
+        sub 2 5 1
+        jz addit
+        ldi 0 10                
+        call mult
+        add 6 6 1                          
+        call showval
+        jmp contadd
+addit   mov 0 6
+        mov 6 4
+        add 6 6 0
+        mov 0 6
+        call showval
+        jmp start
+readkey ldi 3 0x0001
+        ldi 2 0x0901
+        ld 2 2
+        and 2 2 3
+        jz readpb
+        ldi 1 0x0900
+        ld 1 1
+        ret
+readpb  ldi 3 0x0001
+        ldi 2 0x0c00
+        ld 2 2
+        and 2 2 3
+        jz readkey
+        ldi 1 0x0c01
+        ldi 3 0x0b00
+        st 3 1
+        jmp readkey
+showval ldi 3 0x0b00
+        st 3 6
+        ret
+
+//
+
+.data
+.code
+init    ldi 7 0x0990
+        ldi 6 0x0000
+        ldi 0 0x0000
+        mov 6 0
+        call showval
+start   call readkey
+        ldi 5 0x000a
+        sub 2 5 1
+        jz init
+        ldi 5 0x000b
+        sub 2 5 1
+        jz cmultlb
+        ldi 5 0x000c
+        sub 2 5 1
+        jz caddlb
+        ldi 0 10
+        call mult               
+        add 6 6 1             
+        call showval
+        jmp start
+cmultlb mov 4 6              
+        ldi 6 0x0000            
+contmul call readkey
+        ldi 5 0x000b
+        sub 2 5 1
+        jz carp
+        ldi 0 10                
+        call mult
+        add 6 6 1                          
+        call showval
+        jmp contmul
+carp    mov 0 6
+        mov 6 4                   
+        call mult
+        call showval
+        jmp start 
+mult    ldi 5 0x0000
+        mov 3 0 
+        jz out1
+loop2   add 5 6 5
+        dec 3
+        jz out1
+        jmp loop2
+out1    mov 6 5
+        mov 0 6
+        ret
+caddlb  mov 4 6              
+        ldi 6 0x0000            
+contadd call readkey
+        ldi 5 0x000c
+        sub 2 5 1
+        jz addit
+        ldi 0 10                
+        call mult
+        add 6 6 1                          
+        call showval
+        jmp contadd
+addit   mov 0 6
+        mov 6 4
+        add 6 6 0
+        mov 0 6
+        call showval
+        jmp start
+readkey ldi 3 0x0001
+        ldi 2 0x0901
+        ld 2 2
+        and 2 2 3
+        jz readpb
+        ldi 1 0x0900
+        ld 1 1
+        ret
+readpb  ldi 3 0x0001
+        ldi 2 0x0c00
+        ld 2 2
+        and 2 2 3
+        jz readkey
+        push 6
+        ldi 6 0x0c01
+        call showval
+        pop 6
+        jmp readkey
+showval mov 5 6
+        ldi 4 0x00e0
+        and 4 5 4
+        jz pass1
+        ldi 3 0x0020
+        sub 3 4 3
+        jz pass1
+        ldi 3 0x0040
+        sub 3 4 3
+        jz pass1
+        ldi 3 0x0060
+        sub 3 4 3
+        jz pass1
+        ldi 3 0x0080
+        sub 3 4 3
+        jz pass1
+        ldi 4 0x0060
+        add 5 5 4
+pass1   ldi 4 0x00f0
+        and 4 5 4
+        jz pass2
+        ldi 3 0x0010
+        sub 3 4 3
+        jz pass2
+        ldi 3 0x0020
+        sub 3 4 3
+        jz pass2
+        ldi 3 0x0030
+        sub 3 4 3
+        jz pass2
+        ldi 3 0x0040
+        sub 3 4 3
+        jz pass2
+        ldi 4 0x0030
+        add 5 5 4
+pass2   ldi 4 0x0078
+        and 4 5 4
+        jz pass3
+        ldi 3 0x0008
+        sub 3 4 3
+        jz pass3
+        ldi 3 0x0010
+        sub 3 4 3
+        jz pass3
+        ldi 3 0x0018
+        sub 3 4 3
+        jz pass3
+        ldi 3 0x0020
+        sub 3 4 3
+        jz pass3
+        ldi 4 0x0018
+        add 5 5 4
+pass3   ldi 4 0x01c0
+        and 4 5 4
+        jz pass4
+        ldi 3 0x0040
+        sub 3 4 3
+        jz pass4
+        ldi 3 0x0080
+        sub 3 4 3
+        jz pass4
+        ldi 3 0x00c0
+        sub 3 4 3
+        jz pass4
+        ldi 3 0x0100
+        sub 3 4 3
+        jz pass4
+        ldi 4 0x00c0
+        add 5 5 4
+pass4   ldi 4 0x003c
+        and 4 5 4
+        jz pass5
+        ldi 3 0x0004
+        sub 3 4 3
+        jz pass5
+        ldi 3 0x0008
+        sub 3 4 3
+        jz pass5
+        ldi 3 0x000c
+        sub 3 4 3
+        jz pass5
+        ldi 3 0x0010
+        sub 3 4 3
+        jz pass5
+        ldi 4 0x000c
+        add 5 5 4
+pass5   ldi 4 0x01e0
+        and 4 5 4
+        jz pass6
+        ldi 3 0x0020
+        sub 3 4 3
+        jz pass6
+        ldi 3 0x0040
+        sub 3 4 3
+        jz pass6
+        ldi 3 0x0060
+        sub 3 4 3
+        jz pass6
+        ldi 3 0x0080
+        sub 3 4 3
+        jz pass6
+        ldi 4 0x0060
+        add 5 5 4
+pass6   ldi 4 0x001e
+        and 4 5 4
+        jz endshow
+        ldi 3 0x0002
+        sub 3 4 3
+        jz endshow
+        ldi 3 0x0004
+        sub 3 4 3
+        jz endshow
+        ldi 3 0x0006
+        sub 3 4 3
+        jz endshow
+        ldi 3 0x0008
+        sub 3 4 3
+        jz endshow
+        ldi 4 0x0006
+        add 5 5 4
+endshow ldi 3 0x0b00
+        st 3 5
+        ret

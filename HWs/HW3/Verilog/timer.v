@@ -15,7 +15,9 @@ always @(posedge clk)
 always @(posedge clk)
     begin
         if ((ack1==1)&&(ready==1))
-            ready<=0;      
+            begin
+                ready<=0;
+            end      
         else if ((pushbutton==0))
             ready<=1;
     end
@@ -26,7 +28,7 @@ always @(posedge clk1[25]) begin
 end
 
 always @(*)
-if (statusordata1==0)
+if (statusordata1==1)
     timeout={15'b0,ready};
 else
     timeout=current_time;

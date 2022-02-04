@@ -68,16 +68,10 @@ always @(posedge clk)
 			end
 
 		JMP:
-			begin
-				pc <= pc+1;
-				state <= JMP2;  
-			end
-		JMP2:
-			begin
-				pc <= data_in;
-				state <= FETCH;  
-			end
- 
+            begin
+                pc <= pc+data_in;
+                state <= FETCH;
+            end
 		ALU:
 			begin
 				regbank[ir[2:0]]<=result;
@@ -107,9 +101,8 @@ always @(posedge clk)
 		CALL: 
 			begin
 				regbank[7] <=regbank[7] - 1; 
-			   	pc<=pc+1;
 				state <= CALL2;
-			end
+			end 
 		CALL2:
 			begin
 				//to be added
