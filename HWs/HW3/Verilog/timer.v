@@ -1,17 +1,36 @@
 
-module timer(pshbtn, clk1);
+module timer(
+                input clk,
+                input ack1,
+                input statusordata1,
+                output reg [15:0] timeout);
 
-    input wire pshbtn;
-    input wire [25:0] clk1; // clk1 is the clock signal for 1 second
-
-    // register holds 16 bit data current_time
-    output reg [15:0] current_time;
-
-    // at every second update current_time
+reg ready;
+reg [25:0] clk1;
+reg [15:0] current_time;
+always @(posedge clk)
+	clk1<=clk1+1;
+    
+always @(posedge clk)
+    begin
+        if ((ack1==1)&&(ready==1))
+            ready<=0;        
+    end
+        // at every second update current_time
     always @(posedge clk1[25]) begin
-        current_time <= current_time + 1;
-        clk1 = 26'b0;
+            current_time <= current_time + 1;
+            // clk1 = 26'b0;
     end
 
+always @(*)
+if (statusordata1==0)
+    timeout={15'b0,ready};
+else
+    timeout=current_time;
 
+
+initial begin		
+    clk1 = 0;
+    ready=0;
+end
 endmodule

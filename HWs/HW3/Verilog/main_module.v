@@ -6,22 +6,27 @@ module main_module (
 			input [3:0] colread,
 			input clk,
 			output wire [3:0] grounds,
-			output wire [6:0] display
+			output wire [6:0] display,
+			input pushbutton
 			);
 
 reg [15:0] data_all;
 wire [15:0] keyout;
 reg [1:0] ready_buffer;
 reg ack;
+reg ack1;
 reg statusordata;
+reg statusordata1;
+wire [15:0] timeout;
 
 //memory map is defined here
 localparam	BEGINMEM=16'h0000,
 		ENDMEM=16'h01ff,
 		KEYPAD=16'h0900,
-		SEVENSEG=16'h0b00;
+		SEVENSEG=16'h0b00,
+		TIMER=16'h0c00;
 //  memory chip
-reg [15:0] memory [0:127]; 
+reg [15:0] memory [0:512]; 
  
 // cpu's input-output pins
 wire [15:0] data_out;
@@ -34,16 +39,23 @@ sevensegment ss1 (.datain(data_all), .grounds(grounds), .display(display), .clk(
 
 keypad  kp1(.rowwrite(rowwrite), .colread(colread), .clk(clk), .ack(ack), .statusordata(statusordata), .keyout(keyout));//to be added);
 
-vertebrate br1 (.clk(clk), .data_in(data_in), .data_out(data_out), .address(address), .memwt(memwt));//to be added);
+bird br1 (.clk(clk), .data_in(data_in), .data_out(data_out), .address(address), .memwt(memwt));//to be added);
 
+timer t1 (.clk(clk), .ack1(ack1), .statusordata1(statusordata1) ,.timeout(timeout) );//to be added);
 
 //multiplexer for cpu input
 always @*
+	if (pushbutton == 0)
+		begin 
+			statusordata1=1;
+		end
 	if ( (BEGINMEM<=address) && (address<=ENDMEM) )
 		begin
 			data_in=memory[address];
 			ack=0;
 			statusordata=0;
+			ack1=0;
+			statusordata1=0;
 		end
 	else if (address==KEYPAD+1)
 		begin	
@@ -58,28 +70,45 @@ always @*
 			data_in<=keyout;
 			ack=1;
 		end
+	else if (address==TIMER+1)
+		begin
+			statusordata1=1;
+			data_in=timeout;
+			ack1=0;
+		end
+	else if (address==TIMER)
+	begin
+			statusordata1=0;
+			data_in<=timeout;
+			ack1=1;
+	end
 	else
 		begin
 			data_in=16'hf345; //any number
 			ack=0;
 			statusordata=0;
+			ack1=0;
+			statusordata1=0;
 		end
 
 //multiplexer for cpu output 
 
 always @(posedge clk) //data output port of the cpu
+	begin
 	if (memwt)
 		if ( (BEGINMEM<=address) && (address<=ENDMEM) )
 			memory[address]<=data_out;
 		else if ( SEVENSEG==address) 
 			data_all<=data_out;
-
+	end
 
 initial 
 	begin
 		data_all=0;
 		ack=0;
 		statusordata=0;
+		ack1=0;
+		statusordata1=0;
 		$readmemh("ram.dat", memory);
 	end
 

@@ -1,10 +1,11 @@
 //bird CPU
-module vertebrate (
+module bird (
 		input clk,
 		input [15:0] data_in,
 		output reg [15:0] data_out,
 		output reg [15:0] address,
-		output memwt
+		output memwt,
+		input pushbutton
 		);
 
 reg [15:0] pc, ir; //program counter, instruction register
@@ -21,16 +22,15 @@ localparam	FETCH=4'b0000,
 		ST=4'b0011,		// 3
 		JZ=4'b0100,		// 4
 		JMP=4'b0101,	// 5
-		// JMP2=4'b0110,	// 6
+		JMP2=4'b0110,	// 6
 		ALU=4'b0111,	// 7	
 		PUSH=4'b1000,	// 8
 		POP1=4'b1001,	// 9
-		POP2=4'b1100,	// 12
 		CALL=4'b1010,	// 10
-		// CALL2=4'b1110,	// 14
 		RET1=4'b1011,	// 11
-		RET2=4'b1101;	// 13
- 
+		POP2=4'b1100,	// 12
+		RET2=4'b1101,	// 13
+		CALL2=4'b1110;	// 14
 
 wire zeroresult; 
 
@@ -70,6 +70,11 @@ always @(posedge clk)
 		JMP:
 			begin
 				pc <= pc+data_in;
+				state <= JMP2;  
+			end
+		JMP2:
+			begin
+				pc <= data_in;
 				state <= FETCH;  
 			end
  
@@ -102,7 +107,13 @@ always @(posedge clk)
 		CALL: 
 			begin
 				regbank[7] <=regbank[7] - 1; 
-			   	pc<=pc+ir;
+			   	pc<=pc+1;
+				state <= CALL2;
+			end
+		CALL2:
+			begin
+				//to be added
+				pc <= pc+data_in;
 				state <= FETCH;
 			end
 
@@ -132,7 +143,7 @@ always @*
 		ST:	address=regbank[ir[5:3]];
 		PUSH:	address=regbank[7];
 		POP2:	address=regbank[7];	//to be added
-		CALL:	address=regbank[7];	//to be added
+		CALL2:	address=regbank[7];	//to be added
 		RET2:	address=regbank[7];	//to be added
 		default: address=pc;
 	endcase
