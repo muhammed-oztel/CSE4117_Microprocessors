@@ -70,7 +70,12 @@ readkey ldi 3 0x0001
         ldi 1 0x0900
         ld 1 1
         ret
-readk2  ldi 1 0x0c00
+readk2  ldi 3 0x0001
+        ldi 2 0x0c00
+        ld 2 2
+        and 2 2 3
+        jz readkey
+        ldi 1 0x0c01
         ld 1 1
         ret
 showval mov 0 6

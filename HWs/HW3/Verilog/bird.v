@@ -66,10 +66,10 @@ always @(posedge clk)
 			begin
 				state <= FETCH;  
 			end
- 
+
 		JMP:
 			begin
-				pc <= pc+data_in;
+				pc <= pc+1;
 				state <= JMP2;  
 			end
 		JMP2:
@@ -143,7 +143,7 @@ always @*
 		ST:	address=regbank[ir[5:3]];
 		PUSH:	address=regbank[7];
 		POP2:	address=regbank[7];	//to be added
-		CALL2:	address=regbank[7];	//to be added
+		CALL:	address=regbank[7];	//to be added
 		RET2:	address=regbank[7];	//to be added
 		default: address=pc;
 	endcase

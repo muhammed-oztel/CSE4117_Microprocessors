@@ -1,0 +1,13 @@
+.data
+.code
+init    ldi 5 0x0b00
+        ldi 0 0x0c00
+        ld 0 0
+        ldi 1 0x0001
+        and 1 0 1
+        jz init
+        ldi 4 0x0c01
+        ld 4 4
+        st 5 4
+        jmp init
+        

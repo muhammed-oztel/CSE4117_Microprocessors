@@ -41,15 +41,15 @@ keypad  kp1(.rowwrite(rowwrite), .colread(colread), .clk(clk), .ack(ack), .statu
 
 bird br1 (.clk(clk), .data_in(data_in), .data_out(data_out), .address(address), .memwt(memwt));//to be added);
 
-timer t1 (.clk(clk), .ack1(ack1), .statusordata1(statusordata1) ,.timeout(timeout) );//to be added);
+timer t1 (.pushbutton(pushbutton),.clk(clk), .ack1(ack1), .statusordata1(statusordata1) ,.timeout(timeout) );//to be added);
 
 //multiplexer for cpu input
 always @*
-	if (pushbutton == 0)
-		begin 
+	if (pushbutton==0)
+		begin
 			statusordata1=1;
 		end
-	if ( (BEGINMEM<=address) && (address<=ENDMEM) )
+	else if ( (BEGINMEM<=address) && (address<=ENDMEM) )
 		begin
 			data_in=memory[address];
 			ack=0;

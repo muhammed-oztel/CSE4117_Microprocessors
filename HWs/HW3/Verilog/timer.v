@@ -1,5 +1,6 @@
 
 module timer(
+                input pushbutton,
                 input clk,
                 input ack1,
                 input statusordata1,
@@ -14,13 +15,15 @@ always @(posedge clk)
 always @(posedge clk)
     begin
         if ((ack1==1)&&(ready==1))
-            ready<=0;        
+            ready<=0;      
+        else if ((pushbutton==0))
+            ready<=1;
     end
-        // at every second update current_time
-    always @(posedge clk1[25]) begin
-            current_time <= current_time + 1;
-            // clk1 = 26'b0;
-    end
+// at every second update current_time
+always @(posedge clk1[25]) begin
+        current_time <= current_time + 1;
+        // clk1 = 26'b0;
+end
 
 always @(*)
 if (statusordata1==0)
