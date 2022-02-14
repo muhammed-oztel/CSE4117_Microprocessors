@@ -1,74 +1,46 @@
 .data
 .code
-init    ldi 7 0x0990
-reset   ldi 6 0x0000
+init    ldi 7 0x1000
         ldi 0 0x0000
-        mov 6 0
-start   call readkey             
-        add 6 6 1             
+        ldi 6 0x0000
+readkey ldi 4 0x0901
+        ld 4 4
+        ldi 1 0x0001
+        and 1 4 1
+        jz readpb
+        ldi 4 0x0900
+        ld 4 4
+        ldi 1 0x000c
+        sub 1 1 4
+        jz sum              
+        add 6 4 6
         call showval
-        jmp start
-cmultlb mov 4 6              
-        ldi 6 0x0000            
-contmul call readkey
-        ldi 5 0x000b
-        sub 2 5 1
-        jz carp
-        ldi 0 0x000a                
-        call mult
-        add 6 6 1                          
+        jmp readpb
+readpb  ldi 4 0x0c01
+        ld 4 4
+        ldi 1 0x0001
+        and 1 4 1
+        jz readkey
+        ldi 4 0x0c00
+        ld 4 4
+        mov 2 6
+        mov 6 4
         call showval
-        jmp contmul
-carp    mov 0 6
-        mov 6 4                   
-        call mult
-        call showval
-        jmp start 
+        mov 6 2
+        jmp readkey
 mult    ldi 5 0x0000
-        mov 3 0 
+        sub 3 6 5
         jz out1
 loop2   add 5 6 5
-        dec 3
+        dec 1
         jz out1
         jmp loop2
 out1    mov 6 5
-        mov 0 6
         ret
-caddlb  mov 4 6              
-        ldi 6 0x0000            
-contadd call readkey
-        ldi 5 0x000c
-        sub 2 5 1
-        jz addit
-        ldi 0 0x000a                
-        call mult
-        add 6 6 1                          
+sum     add 0 6 0
+        mov 6 0
         call showval
-        jmp contadd
-addit   mov 0 6
-        mov 6 4
-        add 6 6 0
-        mov 0 6
-        call showval
-        jmp start
-readkey ldi 3 0x0001
-        ldi 4 0x0901
-        ld 4 4
-        and 4 4 3
-        jz readpb
-        ldi 1 0x0900
-        ld 1 1
-        ret
-readpb  ldi 3 0x0001
-        ldi 2 0x0c01
-        ld 2 2
-        and 2 2 3
-        jz readkey
-        push 6
-        ldi 6 0x0c00
-        ld 6 6
-        call showval
-        pop 6
+        ldi 6 0x0000
         jmp readkey
 showval mov 5 6
         ldi 4 0x00e0

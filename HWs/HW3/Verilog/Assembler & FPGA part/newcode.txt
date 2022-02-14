@@ -1,6 +1,7 @@
 .data
 .code
         ldi 7 0x1000
+start   jmp readkey
 readkey	ldi 0 0x0901
 	ld 0 0
 	ldi 1 0x0001
@@ -8,7 +9,7 @@ readkey	ldi 0 0x0901
 	jz readpb
 	ldi 0 0x0900
 	ld 0 0
-        call showval
+        jmp showval
 readpb	ldi 0 0x0c01
 	ld 0 0 
 	ldi 1 0x0001
@@ -16,9 +17,8 @@ readpb	ldi 0 0x0c01
 	jz readkey
 	ldi 0 0x0c00
 	ld 0 0
-	call showval
-	jmp readkey
+	jmp showval
 showval ldi 1 0x0b00
 	st 1 0
-	ret
+	jmp start
 
