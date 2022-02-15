@@ -12,7 +12,7 @@ readkey ldi 4 0x0901
         ld 4 4
         ldi 1 0x000c
         sub 1 1 4
-        jz sum              
+        jz sum             
         add 6 4 6
         call showval
         jmp readpb
@@ -28,6 +28,22 @@ readpb  ldi 4 0x0c01
         call showval
         mov 6 2
         jmp readkey
+cmultlb mov 4 6              
+        ldi 6 0x0000            
+contmul call readkey
+        ldi 5 0x000b
+        sub 2 5 1
+        jz carp
+        ldi 0 10                
+        call mult
+        add 6 6 1                          
+        call showval
+        jmp contmul
+carp    mov 0 6
+        mov 6 4                   
+        call mult
+        call showval
+        jmp start 
 mult    ldi 5 0x0000
         sub 3 6 5
         jz out1
